@@ -1,0 +1,68 @@
+\documentclass[a4paper,12pt]{report}
+
+% Encodage et langue
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+
+% Mise en page
+\usepackage{geometry}
+\geometry{
+    left=2.5cm,
+    right=2.5cm,
+    top=2.5cm,
+    bottom=2.5cm
+}
+
+% Packages
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{lipsum}
+\usepackage{tikz}      % Pour positionnement précis
+\usepackage{everypage} % Pour ajouter le logo sur toutes les pages
+
+% Fonction pour mettre le logo sur toutes les pages
+\newcommand{\AddLogo}{
+    \begin{tikzpicture}[remember picture, overlay]
+        \node[anchor=north west, xshift=1cm, yshift=-1cm] 
+        at (current page.north west) {\includegraphics[width=4cm]{logo_su.jpg}};
+    \end{tikzpicture}
+}
+
+% Ajouter le logo à chaque page
+\AddEverypageHook{\AddLogo}
+
+\begin{document}
+
+% Page de garde
+\begin{titlepage}
+    \centering
+    \vspace*{4cm}
+    {\Huge \textbf{Smart Glasses}}\\[1.5cm]
+    {\Large Authors : Sarah Nacim Evinia Oualid Romane}\\[0.5cm]
+    {\Large Master 2 : MSR 2025-2026}
+    \vfill
+
+    \includegraphics[width=0.4\textwidth]{logo.png}% 
+\end{titlepage}
+
+% Table des matières
+\tableofcontents
+\newpage
+
+% Chapitres
+\chapter{Introduction}
+\lipsum[1-2]
+
+\chapter{Matériaux}
+\lipsum[3-4]
+
+\chapter{Mise en place}
+\lipsum[5-6]
+
+\chapter{Fonctionnalités}
+\lipsum[7]
+
+\chapter{Pistes d'amélioration}
+\lipsum[8-9]
+\end{document}
