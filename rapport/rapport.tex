@@ -18,14 +18,16 @@
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{lipsum}
-\usepackage{tikz}      % Pour positionnement précis
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows, positioning}   
 \usepackage{everypage} % Pour ajouter le logo sur toutes les pages
+\usepackage{longtable}% Pour les tableaux longs
 
 % Fonction pour mettre le logo sur toutes les pages
 \newcommand{\AddLogo}{
     \begin{tikzpicture}[remember picture, overlay]
-        \node[anchor=north west, xshift=1cm, yshift=-1cm] 
-        at (current page.north west) {\includegraphics[width=4cm]{logo_su.jpg}};
+        \node[anchor=north west, xshift=0.75cm, yshift=-0.75cm] 
+        at (current page.north west) {\includegraphics[width=3cm]{logo_su.jpg}};
     \end{tikzpicture}
 }
 
@@ -40,10 +42,8 @@
     \vspace*{4cm}
     {\Huge \textbf{Smart Glasses}}\\[1.5cm]
     {\Large Authors : Sarah Nacim Evinia Oualid Romane}\\[0.5cm]
-    {\Large Master 2 : MSR 2025-2026}
-    \vfill
-
-    \includegraphics[width=0.4\textwidth]{logo.png}% 
+    {\Large Master 2 : MSR 2025-2026}\\[3cm]
+    \includegraphics[width=0.8\textwidth]{logo.png}% 
 \end{titlepage}
 
 % Table des matières
@@ -52,19 +52,104 @@
 
 % Chapitres
 \section{Introduction}
-\paragraph{Project Context}
 
-\paragraph{Objectives}
+\subsection{Project Context}
 
-\section{Matériaux utilisés}
-\lipsum[3-4]
+With the rise of wearable technology, smart glasses are undergoing significant development. Companies such as Meta, with their Ray-Ban Meta glasses, are now offering devices capable of capturing images and video, interacting via voice commands, and accessing AI-based assistants.
 
-\section{Mise en place}
-\lipsum[5-6]
+At the same time, within the field of assistive technology, several research projects and commercial products aim to support visually impaired or blind individuals specifically through obstacle detection, scene description, and the reading of visual information. Furthermore, recent breakthroughs in artificial intelligence, particularly in natural language processing (NLP) and computer vision, are opening up new possibilities to enhance visual assistance tools.
+
+\subsection{Objectives}
+
+In this context, our project follows a similar path, but with a specific focus on social interaction and assistance. The objective is to design smart glasses capable of detecting both the emotions of the person facing the user and any obstacles within the environment.
+
+However, to ensure reliable operation and straightforward interaction, these two features do not run simultaneously. The system is organized into different operating modes, accessible through an interface of physical buttons integrated into the glasses. This allows the user to switch between "obstacle detection" and "emotion detection" modes, depending on their immediate needs.
+
+This approach simplifies data processing, improves the clarity of haptic feedback, and provides the user with greater control over the device's behavior.
+
+\section{Materials Used}
+
+\begin{longtable}{|p{3cm}|p{2cm}|p{3cm}|p{6cm}|}
+\hline
+\textbf{Component} & \textbf{Number} & \textbf{Reference / Model} & \textbf{Description / Role} \\
+\hline
+\endfirsthead
+
+\hline
+\textbf{Component} & \textbf{Number} & \textbf{Reference / Model} & \textbf{Description / Role} \\
+\hline
+\endhead
+
+\hline
+\endfoot
+
+\hline
+\endlastfoot
+
+Camera & 1 & Camera Raspberry module 2 & Sony IMX219 8-megapixel sensor \\
+\hline
+Raspberry Pi & 1 & Raspberry Pi 3B+ & Used to process image data and send it to the computer \\
+\hline
+Arduino & 1 & Arduino Uno & Used to control the haptic feedback system (ie pneumatic actuators...) \\
+\hline
+Differential Pressure sensor & 2 & DFRobot SEN0343 & Used to detect pressure into balloons \\
+\hline
+Motor driver & 3 & L298N & Used to control 2 motors per driver \\
+\hline
+Valves & 2 & DFR0866 & Used to switch between inflate and deflate \\
+\hline
+Pumps & 4 & DFRobot 370 Mini Vacuum Pump & 2 used to inflate and 2 to deflate balloons \\
+\hline
+Balloons & 2 & Standard party balloons & Used to do haptic feedback \\
+\hline
+Push buttons & 2 & Standard push buttons & Used to switch between modes \\
+\hline
+Computer & 1 & PC linux & Used to run the AI models for emotion and obstacle detection \\
+\hline
+Battery 12V & 1 & lead acid battery 12V & Used to power the pumps \\
+\hline
+Battery 5V and <2.5A & 2 & Standard Power bank 5V & Used to power the Raspberry Pi and Arduino \\
+\hline
+
+\caption{Main hardware components used in the project}
+\end{longtable}
+
+
+\section{Implementation}
+\subsection{Overall Architecture}
+
+\begin{center}
+\begin{tikzpicture}[
+    block/.style={rectangle, draw, rounded corners, minimum width=3.5cm, minimum height=1cm, align=center},
+    arrow/.style={->, thick}
+]
+
+% Nodes
+\node[block] (user) {User};
+\node[block, right=5cm of user] (arduino) {Arduino};
+\node[block, above=2cm of user] (raspi) {Raspberry Pi};
+\node[block, right=5cm of raspi] (computer) {Computer / AI Models};
+% Arrows
+\draw[arrow] (raspi.east) -- (computer.west) node[midway, above] {Camera Stream (WIFI)};
+\draw[arrow] (computer.south) -- (arduino.north east) node[midway, right] {Control signals};
+\draw[arrow] (user.north east) -- (arduino.north west) node[midway, above] {Button press};
+\draw[arrow] (arduino.south west) -- (user.south east) node[midway, above] {Haptic feedback};
+\draw[arrow] (arduino.north) -- (computer.south west) node[midway, above, sloped] {Mode info};
+
+\end{tikzpicture}
+\end{center}
+
+\subsection{Camera and Raspberry pi}
+\subsection{Pneumatic/haptic system}
+\subsection{Computer and AI models}
+\subsection{User Interface}
+
 
 \section{Fonctionnalités}
-\lipsum[7]
+
+
+\section{Objectifs initiaux et limites du projet}
 
 \section{Pistes d'amélioration}
-\lipsum[8-9]
+
 \end{document}
