@@ -36,6 +36,11 @@
 
 \begin{document}
 
+% Numérotation des sections en chiffres  sans le zzero du chapitre
+\setcounter{chapter}{0}  
+\renewcommand{\thesection}{\arabic{section}}
+
+
 % Page de garde
 \begin{titlepage}
     \centering
@@ -140,9 +145,20 @@ Battery 5V and <2.5A & 2 & Standard Power bank 5V & Used to power the Raspberry 
 \end{center}
 
 \subsection{Camera and Raspberry pi}
+Initially, we attempted to implement a stereo camera system using an Arducam module to obtain depth information directly from two synchronized camera feeds. However, the image quality was insufficient for reliable image processing, which led to poor performance in depth estimation. Moreover, the Raspberry Pi 4B frequently crashed when using the Arducam module, likely due to insufficient processing power and high resource demands of the stereo setup. This instability made the configuration unreliable for real-time operation.
+
+
+As a result, we switched to using a single camera, combined with AI processing on the computer block to infer depth information from the captured images. This approach allowed us to maintain accurate obstacle and emotion detection while simplifying the hardware setup.
+
+For transmitting the camera stream, we initially experimented with USB gadget mode on a Raspberry Pi 4B. However, this setup proved unstable and presented power supply challenges, as the USB port could not simultaneously provide enough power and transmit data reliably.
+
+To overcome these issues, we opted for a Raspberry Pi 3B+ equipped with Wi-Fi for streaming the camera feed to the computer. Although this solution introduces a small amount of latency, it provides a stable and functional system for real-time image analysis.  
+
+All the configuration steps and installations required to use the Raspberry Pi 3B+ with Wi-Fi for the system are detailed in the file \texttt{procedure\_camera.md}.
+
 \subsection{Pneumatic/haptic system}
 \subsection{Computer and AI models}
-\subsection{User Interface}
+\subsection{User Interface + CAD Design}
 
 
 \section{Fonctionnalités}
