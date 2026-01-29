@@ -157,7 +157,89 @@ To overcome these issues, we opted for a Raspberry Pi 3B+ equipped with Wi-Fi fo
 All the configuration steps and installations required to use the Raspberry Pi 3B+ with Wi-Fi for the system are detailed in the file \texttt{procedure\_camera.md}.
 
 \subsection{Pneumatic/haptic system}
-\subsection{Computer and AI models}
+
+\subsection{Communication Arduino - Computer}
+
+Communication between the Arduino and the computer is carried out via a serial port (USB). The Arduino sends mode commands to the PC using the format \texttt{MODE:X}, where X represents the mode selected by the user through the push buttons.
+
+A launcher program (\texttt{launcher.py}) running on the computer continuously listens to the serial port. Upon receiving a mode command, it manages the start and stop of the corresponding Python processes:
+
+\begin{itemize}
+    \item \textbf{Mode 1}: Launch of the emotion detection module (\texttt{emotion\_detection2\_pneu.py})
+    \item \textbf{Mode 2}: Launch of the obstacle detection module using YOLO (\texttt{objet.py})
+    \item \textbf{Mode 3}: Stop of all active scripts (neutral mode)
+\end{itemize}
+
+This orchestration system ensures that only one AI module runs at a time, optimizing the use of computational resources and simplifying the delivery of haptic feedback to the user. In the event of an interruption (mode change), the launcher cleanly stops the current process before starting a new one.
+
+\subsection{AI Models and Processing}
+The algorithms described below are not executed manually from a terminal, but are launched through the \texttt{launcher.py} script, which manages communication with the Arduino and handles mode switching.  
+To check the required installations needed to run the scripts, refer to the \texttt{requirements.txt} file.
+
+\subsubsection{Emotion Detection}
+
+The emotion detection module uses the \textbf{FER} (Facial Expression Recognition) library, which is based on deep neural networks. FER detects seven facial emotions: happy, surprise, sad, angry, fear, disgust, and neutral.\\
+To simplify the haptic feedback system and reduce computational load, the seven emotions are grouped into three main categories:
+
+\begin{itemize}
+    \item \textbf{Happy}: happy, surprise
+    \item \textbf{Sad}: sad, fear, disgust
+    \item \textbf{Neutral}: angry, neutral
+\end{itemize}
+
+A confidence threshold of 0.35 is applied to ignore low-confidence detections. Each reduced emotion is associated with a confidence score computed from the FER probabilities.
+
+To allow real-time processing, several optimizations are applied:
+
+\begin{itemize}
+    \item \textbf{Frame skipping}: only one frame out of three is processed (FRAME\_SKIP = 3)
+    \item \textbf{Resizing}: images are scaled to 60\% of their original size
+    \item \textbf{Centered detection}: only the face closest to the center of the image is processed\\
+\end{itemize}
+
+Each reduced emotion triggers a specific haptic pattern using the pneumatic balloons:
+
+\begin{itemize}
+    \item \textbf{Happy}: right balloon inflates and deflates, left balloon inactive
+    \item \textbf{Sad}: left balloon inflates and deflates, right balloon inactive
+    \item \textbf{Neutral}: both balloons remain inactive
+\end{itemize}
+
+The Arduino receives the commands through a serial connection and controls the pneumatic system.
+
+The program receives JPEG-compressed video frames through a UDP socket from the Raspberry Pi. Each frame is decoded and processed by FER at regular intervals. The corresponding haptic commands are then sent to the Arduino. A live display shows the detected face and the recognized emotion.
+
+The emotion is detected only once in order to avoid overstimulating the user.
+\subsubsection{Obstacle Detection}
+
+The obstacle detection module is based on the \textbf{YOLO} (You Only Look Once) object detection model combined with the \textbf{Depth Anything V2} network for depth estimation. YOLO is used to detect relevant objects in the scene, while Depth Anything provides a depth map that allows estimating the relative distance of each detected object.
+
+Only a subset of COCO classes is considered, corresponding to potential obstacles for the user (persons, chairs, beds, couches, benches, handbags, suitcases).
+
+The processing pipeline is structured as follows:
+
+\begin{itemize}
+    \item \textbf{Frame acquisition}: The program receives JPEG-compressed video frames via a UDP socket from the Raspberry Pi.
+ 
+    \item \textbf{Object detection}: YOLO detects objects and provides bounding boxes and segmentation masks.
+    
+    \item \textbf{Depth estimation}: Depth Anything computes a dense depth map from the RGB image.
+    
+    \item \textbf{Depth aggregation}: For each object, the average depth is computed using its segmentation mask.
+    
+    \item \textbf{Region of Interest (ROI)}: Only objects located inside a trapezoidal region in front of the user are considered.
+    
+    \item \textbf{Temporal filtering}: An object must be detected continuously for at least one second to be considered stable.
+    
+    \item \textbf{Side selection}: Only one object per side (left and right) is kept, corresponding to the closest obstacle.
+    
+    \item \textbf{Intensity computation}: The closest object is assigned an intensity of 100, while the others are scaled proportionally.
+    
+    \item \textbf{Smoothing}: Haptic intensity variations are limited to avoid sudden pressure changes.
+\end{itemize}
+
+The resulting haptic commands are sent to the Arduino, which controls the pneumatic system to provide feedback to the user. The left and right balloons correspond to obstacles detected on the respective sides of the user.
+
 \subsection{User Interface + CAD Design}
 
 

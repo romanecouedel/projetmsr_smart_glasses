@@ -1,0 +1,21 @@
+# Core
+numpy>=1.23
+opencv-python>=4.8
+torch>=2.0
+torchvision>=0.15
+
+# YOLO Ultralytics
+ultralytics>=8.1.0
+
+# Serial communication
+pyserial>=3.5
+
+# Networking (standard lib, no install needed)
+# socket
+# struct
+
+# Depth Anything V2 dependencies
+timm>=0.9.12
+einops>=0.7.0
+huggingface-hub>=0.20
+
