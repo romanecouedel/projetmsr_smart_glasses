@@ -19,6 +19,7 @@
 \usepackage{hyperref}
 \usepackage{lipsum}
 \usepackage{tikz}
+\usepackage{float}
 \usetikzlibrary{shapes, arrows, positioning}   
 \usepackage{everypage} % Pour ajouter le logo sur toutes les pages
 \usepackage{longtable}% Pour les tableaux longs
@@ -240,7 +241,60 @@ The processing pipeline is structured as follows:
 
 The resulting haptic commands are sent to the Arduino, which controls the pneumatic system to provide feedback to the user. The left and right balloons correspond to obstacles detected on the respective sides of the user.
 
-\subsection{User Interface + CAD Design}
+\subsection{User Interface and CAD Design}
+
+\noindent The mechanical design of the smart glasses was developed with a strong focus on ergonomics, stability, and integration of electronic and pneumatic components. The entire structure was modeled using \textbf{SolidWorks}, allowing precise placement of each element and iterative improvements before manufacturing.
+
+\subsubsection{Mechanical Design and 3D Printing}
+
+\noindent The glasses frame was fully designed in SolidWorks and subsequently manufactured using \textbf{3D printing}. The chosen material was \textbf{PLA}, due to its ease of printing, sufficient mechanical rigidity for prototyping, and lightweight properties, which are essential for wearable devices.
+
+\noindent The front part of the glasses integrates both the display and the camera module. The display is positioned in front of the user’s field of view and fixed to the structure using \textbf{M2.5 screws (20 mm)} to ensure mechanical stability. The camera module is mounted securely using \textbf{M2 screws (16 mm)}, allowing accurate alignment with the user’s visual axis.\\
+
+\noindent Figure~\ref{fig:front_glasses} shows the front view of the glasses, highlighting the positioning of the display and the camera.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{front_glasses.png}
+    \caption{Front view of the smart glasses showing the display and camera mounting}
+    \label{fig:front_glasses}
+\end{figure}
+
+\subsubsection{Integration of the Pneumatic Haptic System}
+
+\noindent Inside each branch of the glasses, a rectangular cavity was designed to accommodate the inflatable balloon used for haptic feedback. This cavity allows the balloon to expand and deflate while remaining protected within the structure.
+
+\noindent An additional hole was integrated inside this rectangular cavity to allow the pneumatic tubes to exit toward the exterior side of the glasses. This design ensures clean cable and tube routing, reduces mechanical stress on the tubing, and maintains user comfort.\\
+
+\noindent Figure~\ref{fig:inside_branch} illustrates the internal structure of the glasses branch, including the balloon housing and tube routing.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{inside_branch.png}
+    \caption{Internal view of the glasses branch showing the balloon cavity and tube exit}
+    \label{fig:inside_branch}
+\end{figure}
+
+\subsubsection{Stability and Head Strap Adapter}
+
+\noindent To improve stability during use and ensure proper positioning of the glasses on the user’s head, a head strap adapter was designed and integrated into the frame. This system is inspired by commercial smart glasses such as the Meta smart glasses.
+
+\noindent The head strap significantly enhances comfort and stability, especially during movement, by distributing the weight of the device and preventing unwanted slipping. This design choice is particularly important given the additional weight introduced by the camera, display, and pneumatic system.\\
+
+\noindent Figure~\ref{fig:headstrap} presents the head strap adapter mounted on the glasses.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{headstrap.png}
+    \caption{Head strap adapter designed to improve stability and comfort}
+    \label{fig:headstrap}
+\end{figure}
+
+\subsubsection{User Comfort Considerations}
+
+\noindent Special attention was given to user comfort during prolonged use. A \textbf{nose cut-out} was designed in the front part of the glasses This opening reduces pressure on the nose bridge and improves overall wearability.
+
+\noindent By combining lightweight materials, ergonomic design, and stabilization accessories, the final mechanical design achieves a balance between functionality, comfort, and robustness, making the smart glasses suitable for real-world usage scenarios.
 
 
 \section{Fonctionnalités}
