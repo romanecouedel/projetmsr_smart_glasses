@@ -19,6 +19,8 @@
 \usepackage{hyperref}
 \usepackage{lipsum}
 \usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{placeins}
 \usepackage{float}
 \usetikzlibrary{shapes, arrows, positioning}   
 \usepackage{everypage} % Pour ajouter le logo sur toutes les pages
@@ -124,26 +126,13 @@ Battery 5V and <2.5A & 2 & Standard Power bank 5V & Used to power the Raspberry 
 \section{Implementation}
 \subsection{Overall Architecture}
 
-\begin{center}
-\begin{tikzpicture}[
-    block/.style={rectangle, draw, rounded corners, minimum width=3.5cm, minimum height=1cm, align=center},
-    arrow/.style={->, thick}
-]
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\textwidth]{archi.png}
+\caption{Overall system architecture of the smart glasses. The system comprises four main components: (1) the user wearing the glasses with integrated balloons controlled by a pneumatics system (2) the Arduino microcontroller managing the pneumatic feedback system, (3) the Raspberry Pi capturing and streaming video frames via Wi-Fi, and (4) the host computer running AI models for emotion and obstacle detection. Communication flows bidirectionally: the camera stream is transmitted from the Raspberry Pi to the computer, while control signals and pressure commands are exchanged between the computer and Arduino via serial communication. User mode selection is handled through physical buttons connected to the Arduino.}
+\label{fig:architecture}
+\end{figure}
 
-% Nodes
-\node[block] (user) {User};
-\node[block, right=5cm of user] (arduino) {Arduino};
-\node[block, above=2cm of user] (raspi) {Raspberry Pi};
-\node[block, right=5cm of raspi] (computer) {Computer / AI Models};
-% Arrows
-\draw[arrow] (raspi.east) -- (computer.west) node[midway, above] {Camera Stream (WIFI)};
-\draw[arrow] (computer.south) -- (arduino.north east) node[midway, right] {Control signals};
-\draw[arrow] (user.north east) -- (arduino.north west) node[midway, above] {Button press};
-\draw[arrow] (arduino.south west) -- (user.south east) node[midway, above] {Haptic feedback};
-\draw[arrow] (arduino.north) -- (computer.south west) node[midway, above, sloped] {Mode info};
-
-\end{tikzpicture}
-\end{center}
 
 \subsection{Camera and Raspberry pi}
 Initially, we attempted to implement a stereo camera system using an Arducam module to obtain depth information directly from two synchronized camera feeds. However, the image quality was insufficient for reliable image processing, which led to poor performance in depth estimation. Moreover, the Raspberry Pi 4B frequently crashed when using the Arducam module, likely due to insufficient processing power and high resource demands of the stereo setup. This instability made the configuration unreliable for real-time operation.
@@ -158,6 +147,57 @@ To overcome these issues, we opted for a Raspberry Pi 3B+ equipped with Wi-Fi fo
 All the configuration steps and installations required to use the Raspberry Pi 3B+ with Wi-Fi for the system are detailed in the file \texttt{procedure\_camera.md}.
 
 \subsection{Pneumatic/haptic system}
+
+The haptic feedback mechanism employed in this project draws inspiration from the OpenPneu platform developed by Tian et al. \cite{openpneu2024}, which presents a compact architecture for multi-channel pneumatic actuation. This approach was selected for its ability to provide precise, controllable haptic sensations through pressure modulation in soft actuators.
+
+\subsubsection{System Architecture}
+
+The pneumatic system comprises four principal components per haptic channel: (i) an inflatable balloon serving as the soft actuator, (ii) a differential pressure sensor (DFRobot SEN0343) for real-time pressure monitoring, (iii) a 3/2-way solenoid valve (DFR0866) for airflow direction control, and (iv) a dual-pump configuration consisting of one inflation pump and one deflation pump (DFRobot 370 Mini Vacuum Pump). The complete system architecture is illustrated in Figure~\ref{fig:pneumatics}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.8\textwidth]{pneumatics.png}
+\caption{Schematic diagram of the pneumatic actuation system for a single haptic channel, adapted from OpenPneu platform \cite{openpneu2024}. The system integrates a 3/2-way valve, differential pressure sensor, inflation and deflation pumps, and soft balloon actuator.}
+\label{fig:pneumatics}
+\end{figure}
+
+\subsubsection{Valve Configuration and Operation}
+
+The 3/2-way solenoid valve features three ports and two stable positions, enabling bidirectional airflow control. In its default state, one port remains permanently open while the valve alternately connects either the inflation or deflation pathway. When the valve switches position, the previously open port closes while the opposite port opens, thereby reversing the airflow direction. This configuration allows for independent control of inflation and deflation processes without requiring additional valves.
+
+\subsubsection{Pressure Control Algorithm}
+
+The system implements a closed-loop pressure control scheme based on proportional feedback. The pressure setpoint $P_{\text{target}}$ is continuously compared with the measured pressure $P_{\text{measured}}$ from the differential sensor to compute the control error:
+
+\begin{equation}
+e(t) = P_{\text{target}} - P_{\text{measured}}
+\end{equation}
+
+The control logic operates as follows:
+\begin{itemize}
+    \item If $e(t) > 0$ (positive error), the valve switches to the inflation configuration, activating the inflation pump until the measured pressure reaches the target value.
+    \item If $e(t) < 0$ (negative error), the valve switches to the deflation configuration, activating the deflation pump to reduce pressure until equilibrium is achieved.
+    \item When $|e(t)|$ falls below a predefined threshold, both pumps are deactivated to prevent oscillations and reduce power consumption.
+\end{itemize}
+
+This feedback control approach ensures rapid and precise pressure regulation, enabling the generation of distinct haptic patterns for different feedback modalities (obstacle detection and emotion recognition). The dual-pump architecture permits simultaneous inflation and deflation capabilities, significantly improving response time compared to passive deflation systems.
+
+\subsubsection{Dual-Channel Implementation}
+
+To provide bilateral haptic feedback corresponding to the left and right sides of the glasses frame, the entire pneumatic system described above is duplicated, resulting in two independent actuation channels. Each channel operates autonomously with its own balloon actuator, pressure sensor, valve, and pump pair. The Arduino microcontroller manages both channels simultaneously, receiving target pressure commands from the host computer via serial communication.
+
+\subsubsection{I2C Address Conflict and Sensor Simulation}
+
+During implementation, a significant hardware limitation was encountered related to the pressure sensors. Both DFRobot SEN0343 differential pressure sensors communicate via the I2C protocol and are factory-configured with identical, non-configurable I2C addresses. Since the Arduino Uno possesses only a single I2C bus, it is unable to distinguish between the two sensors, preventing simultaneous operation of both channels with hardware pressure feedback.
+
+To circumvent this constraint, a software-based sensor simulation approach was developed. The functional pressure sensor was first used to empirically characterize the system's pressure dynamics under three operational conditions: (i) active inflation, (ii) active deflation, and (iii) idle state (no pump activity). Through systematic experimentation, the pressure variation rates were quantified for each condition.
+
+Based on these empirical measurements, a virtual pressure variable \texttt{pressure\_simulated} was implemented in the Arduino firmware. This variable is incremented or decremented at each control cycle according to the current valve state and pump activity, effectively modeling the expected pressure evolution. The control algorithm then operates using this simulated pressure value rather than direct sensor readings.
+
+While this approach successfully enabled dual-channel operation, it presents inherent limitations. The simulated sensor cannot detect external disturbances such as physical contact with the balloon, which would cause unexpected pressure variations. A genuine pressure sensor would immediately detect such anomalies and adjust the control accordingly, whereas the simulation continues to assume nominal behavior. Despite this limitation, the system performance proved satisfactory for the intended application, as the glasses are designed to be worn in a relatively stable configuration where external interference with the actuators is minimal.
+
+
+
 
 \subsection{Communication Arduino - Computer}
 
@@ -222,22 +262,48 @@ The processing pipeline is structured as follows:
 \begin{itemize}
     \item \textbf{Frame acquisition}: The program receives JPEG-compressed video frames via a UDP socket from the Raspberry Pi.
  
-    \item \textbf{Object detection}: YOLO detects objects and provides bounding boxes and segmentation masks.
+    \item \textbf{Object detection}: YOLO detects objects and provides bounding boxes for localization. To improve spatial accuracy, we employ the YOLOv11-seg variant, which extends the base YOLO architecture with instance segmentation capabilities. Unlike standard object detection that only provides rectangular bounding boxes, YOLO-seg generates pixel-precise segmentation masks for each detected object (see Figure~\ref{fig:yolo_detection}). These masks identify all pixels belonging to the object, providing a significantly more accurate representation of the object's spatial extent compared to the entire bounding box region.
     
-    \item \textbf{Depth estimation}: Depth Anything computes a dense depth map from the RGB image.
+    \item \textbf{Depth estimation}: Depth Anything computes a dense depth map from the RGB image (Figure~\ref{fig:depth_map}).
     
-    \item \textbf{Depth aggregation}: For each object, the average depth is computed using its segmentation mask.
+    \item \textbf{Depth aggregation}: For each detected object, the average depth is computed by combining information from the depth map and the segmentation mask. The depth map provides a depth value for every pixel in the image, while the segmentation mask identifies which pixels belong to the detected object. By indexing the depth map with the mask coordinates, we extract the depth values corresponding exclusively to pixels within the object. These depth values are then averaged to obtain a single representative depth estimate for the object.
+
     
-    \item \textbf{Region of Interest (ROI)}: Only objects located inside a trapezoidal region in front of the user are considered.
+    \item \textbf{Region of Interest (ROI)}: Only objects located inside a trapezoidal region in front of the user are considered (illustrated in Figure~\ref{fig:roi}). This trapezoidal shape is specifically designed to respect the natural perspective of human vision: wide at the bottom (near field) and narrow at the top (far field). The geometry of this ROI closely approximates the user's walking path and immediate surroundings, focusing detection efforts on the zone where obstacles pose an actual risk during navigation. Objects detected outside this region, even if visible in the camera frame, are filtered out as they are sufficiently distant or laterally displaced to be irrelevant for immediate obstacle avoidance. This spatial filtering reduces computational load and prevents unnecessary haptic alerts for obstacles that the user is unlikely to encounter.
+
     
     \item \textbf{Temporal filtering}: An object must be detected continuously for at least one second to be considered stable.
     
-    \item \textbf{Side selection}: Only one object per side (left and right) is kept, corresponding to the closest obstacle.
+    \item \textbf{Intensity and side selection}: Only one object per side (left and right) is kept, corresponding to the closest obstacle on each respective side. When obstacles are detected on both sides, the haptic feedback intensity is computed using a proportional relationship based on relative distances. The closest object, regardless of which side it appears on, is always assigned a maximum haptic intensity of 100\%. The intensity for the more distant object is then scaled proportionally according to the depth difference between the two obstacles.
+
     
-    \item \textbf{Intensity computation}: The closest object is assigned an intensity of 100, while the others are scaled proportionally.
-    
-    \item \textbf{Smoothing}: Haptic intensity variations are limited to avoid sudden pressure changes.
+   
 \end{itemize}
+
+\FloatBarrier
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.45\textwidth]{yolo_exemple.png}
+\caption{Example of YOLOv11-seg object detection. The image shows detected obstacles with bounding boxes (rectangles) and pixel-precise segmentation masks (colored overlays).}
+\label{fig:yolo_detection}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.85\textwidth]{depth_ex.png}
+\caption{Dense depth map generated by Depth Anything V2 from an RGB input frame. Warmer regions correspond to closer objects, while colder regions indicate more distant areas.}
+\label{fig:depth_map}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.45\textwidth]{roi_ex.png}
+\caption{Trapezoidal Region of Interest (ROI) overlaid on the camera view. The trapezoid is wide at the bottom (near field) and narrow at the top (far field), respecting natural perspective. Only obstacles detected within this region trigger haptic feedback, focusing attention on the user's immediate walking path.}
+\label{fig:roi}
+\end{figure}
+
+\FloatBarrier
 
 The resulting haptic commands are sent to the Arduino, which controls the pneumatic system to provide feedback to the user. The left and right balloons correspond to obstacles detected on the respective sides of the user.
 
@@ -304,4 +370,10 @@ The resulting haptic commands are sent to the Arduino, which controls the pneuma
 
 \section{Pistes d'amélioration}
 
+\begin{thebibliography}{9}
+\bibitem{openpneu2024}
+Y. Tian, R. Su, X. Wang, N. B. Altin, G. Fang, and C. C. L. Wang,
+``OpenPneu: Compact Platform for Pneumatic Actuation with Multi-Channels,''
+[Conference/Journal details], 2024.
+\end{thebibliography}
 \end{document}
