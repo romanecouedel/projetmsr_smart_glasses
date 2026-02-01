@@ -33,4 +33,4 @@
 \contentsline {subsection}{\numberline {5.1}Initial Project Objectives}{14}{subsection.0.5.1}%
 \contentsline {subsection}{\numberline {5.2}Achieved Objectives}{14}{subsection.0.5.2}%
 \contentsline {subsection}{\numberline {5.3}Unachieved Objectives and System Limitations}{15}{subsection.0.5.3}%
-\contentsline {section}{\numberline {6}Pistes d'amélioration}{15}{section.0.6}%
+\contentsline {section}{\numberline {6}Conclusion}{15}{section.0.6}%

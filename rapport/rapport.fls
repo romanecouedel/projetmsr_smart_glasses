@@ -1,9 +1,9 @@
-PWD /home/oualid/Bureau/projetmsr_smart_glasses/rapport
+PWD /home/romanecdl/Documents/ROB5/designing/git/rapport
 INPUT /etc/texmf/web2c/texmf.cnf
 INPUT /usr/share/texmf/web2c/texmf.cnf
 INPUT /usr/share/texlive/texmf-dist/web2c/texmf.cnf
 INPUT /var/lib/texmf/web2c/pdftex/pdflatex.fmt
-INPUT /home/oualid/Bureau/projetmsr_smart_glasses/rapport/rapport.tex
+INPUT /home/romanecdl/Documents/ROB5/designing/git/rapport/rapport.tex
 OUTPUT rapport.log
 INPUT /usr/share/texlive/texmf-dist/tex/latex/base/report.cls
 INPUT /usr/share/texlive/texmf-dist/tex/latex/base/report.cls

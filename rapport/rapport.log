@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.2.1)  1 FEB 2026 21:21
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.1.22)  1 FEB 2026 22:25
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**/home/oualid/Bureau/projetmsr_smart_glasses/rapport/rapport.tex
-(/home/oualid/Bureau/projetmsr_smart_glasses/rapport/rapport.tex
+**/home/romanecdl/Documents/ROB5/designing/git/rapport/rapport.tex
+(/home/romanecdl/Documents/ROB5/designing/git/rapport/rapport.tex
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
 (/usr/share/texlive/texmf-dist/tex/latex/base/report.cls
@@ -41,9 +41,9 @@ Package: babel 2024/01/07 v24.1 The Babel package
  (/usr/share/texlive/texmf-dist/tex/generic/babel-french/french.ldf
 Language: french 2023-12-19 v3.5r French support from the babel system
 Package babel Info: Hyphen rules for 'acadian' set to \l@french
-(babel)             (\language35). Reported on input line 91.
+(babel)             (\language8). Reported on input line 91.
 Package babel Info: Hyphen rules for 'canadien' set to \l@french
-(babel)             (\language35). Reported on input line 92.
+(babel)             (\language8). Reported on input line 92.
 \FB@stdchar=\count198
 Package babel Info: Making : an active character on input line 420.
 Package babel Info: Making ; an active character on input line 421.
@@ -660,12 +660,12 @@ Package hyperref Info: Link coloring OFF on input line 40.
 <logo.png, id=95, 1606.0pt x 954.56625pt>
 File: logo.png Graphic file (type png)
 <use logo.png>
-Package pdftex.def Info: logo.png  used on input line 54.
+Package pdftex.def Info: logo.png  used on input line 59.
 (pdftex.def)             Requested size: 364.19667pt x 216.4723pt.
 <logo_su.jpg, id=96, 444.66125pt x 179.67125pt>
 File: logo_su.jpg Graphic file (type jpg)
 <use logo_su.jpg>
-Package pdftex.def Info: logo_su.jpg  used on input line 55.
+Package pdftex.def Info: logo_su.jpg  used on input line 60.
 (pdftex.def)             Requested size: 85.35826pt x 34.4888pt.
  [1
 
@@ -677,253 +677,253 @@ Package pdftex.def Info: logo_su.jpg  used on input line 55.
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.59 \newpage
+l.64 \newpage
              
 File: logo_su.jpg Graphic file (type jpg)
 <use logo_su.jpg>
-Package pdftex.def Info: logo_su.jpg  used on input line 59.
+Package pdftex.def Info: logo_su.jpg  used on input line 64.
 (pdftex.def)             Requested size: 85.35826pt x 34.4888pt.
  [1
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 82--82
-[]|\T1/cmr/bx/n/12 Reference /
- []
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 87--87
 []|\T1/cmr/bx/n/12 Reference /
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 97--97
+Underfull \hbox (badness 10000) in paragraph at lines 92--92
+[]|\T1/cmr/bx/n/12 Reference /
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 102--102
 []|\T1/cmr/m/n/12 Camera Rasp-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 97--97
+Underfull \hbox (badness 10000) in paragraph at lines 102--102
 \T1/cmr/m/n/12 berry mo-dule
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 99--99
+Underfull \hbox (badness 10000) in paragraph at lines 104--104
 []|\T1/cmr/m/n/12 Raspberry Pi
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 103--103
+Underfull \hbox (badness 10000) in paragraph at lines 108--108
 []|\T1/cmr/m/n/12 Differential
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 103--103
+Underfull \hbox (badness 10000) in paragraph at lines 108--108
 []|\T1/cmr/m/n/12 DFRobot
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 109--109
+Underfull \hbox (badness 10000) in paragraph at lines 114--114
 []|\T1/cmr/m/n/12 DFRobot 370
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 109--109
+Underfull \hbox (badness 10000) in paragraph at lines 114--114
 \T1/cmr/m/n/12 Mini Va-cuum
  []
 
 
-Underfull \hbox (badness 4647) in paragraph at lines 111--111
+Underfull \hbox (badness 4647) in paragraph at lines 116--116
 []|\T1/cmr/m/n/12 Standard party
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 113--113
+Underfull \hbox (badness 10000) in paragraph at lines 118--118
 []|\T1/cmr/m/n/12 Standard push
  []
 
 File: logo_su.jpg Graphic file (type jpg)
 <use logo_su.jpg>
-Package pdftex.def Info: logo_su.jpg  used on input line 123.
+Package pdftex.def Info: logo_su.jpg  used on input line 128.
 (pdftex.def)             Requested size: 85.35826pt x 34.4888pt.
 [2]
 <archi.png, id=139, 1068.99374pt x 554.07pt>
 File: archi.png Graphic file (type png)
 <use archi.png>
-Package pdftex.def Info: archi.png  used on input line 131.
+Package pdftex.def Info: archi.png  used on input line 136.
 (pdftex.def)             Requested size: 409.71692pt x 212.35803pt.
 File: logo_su.jpg Graphic file (type jpg)
 <use logo_su.jpg>
-Package pdftex.def Info: logo_su.jpg  used on input line 139.
+Package pdftex.def Info: logo_su.jpg  used on input line 144.
 (pdftex.def)             Requested size: 85.35826pt x 34.4888pt.
  [3
 pdfTeX warning (ext4): destination with the same identifier (name{figure.0.1}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.139 
+l.144 
        <./archi.png>]
-LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 147.
+LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 152.
  (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
 )
 <pneumatics.png, id=150, 1303.87125pt x 353.32pt>
 File: pneumatics.png Graphic file (type png)
 <use pneumatics.png>
-Package pdftex.def Info: pneumatics.png  used on input line 159.
+Package pdftex.def Info: pneumatics.png  used on input line 164.
 (pdftex.def)             Requested size: 364.19667pt x 98.68631pt.
 File: logo_su.jpg Graphic file (type jpg)
 <use logo_su.jpg>
-Package pdftex.def Info: logo_su.jpg  used on input line 167.
+Package pdftex.def Info: logo_su.jpg  used on input line 172.
 (pdftex.def)             Requested size: 85.35826pt x 34.4888pt.
  [4
 pdfTeX warning (ext4): destination with the same identifier (name{figure.0.2}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.167 
+l.172 
        <./pneumatics.png>]
 File: logo_su.jpg Graphic file (type jpg)
 <use logo_su.jpg>
-Package pdftex.def Info: logo_su.jpg  used on input line 195.
+Package pdftex.def Info: logo_su.jpg  used on input line 200.
 (pdftex.def)             Requested size: 85.35826pt x 34.4888pt.
  [5]
-Overfull \hbox (10.80864pt too wide) in paragraph at lines 195--196
+Overfull \hbox (10.80864pt too wide) in paragraph at lines 200--201
 []\T1/cmr/m/n/12 Based on these em-pi-ri-cal mea-su-re-ments, a vir-tual pres-sure va-riable \T1/cmtt/m/n/12 pressure_simulated
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 226--227
+Underfull \hbox (badness 10000) in paragraph at lines 231--232
 
  []
 
 File: logo_su.jpg Graphic file (type jpg)
 <use logo_su.jpg>
-Package pdftex.def Info: logo_su.jpg  used on input line 240.
+Package pdftex.def Info: logo_su.jpg  used on input line 245.
 (pdftex.def)             Requested size: 85.35826pt x 34.4888pt.
 [6]
 File: logo_su.jpg Graphic file (type jpg)
 <use logo_su.jpg>
-Package pdftex.def Info: logo_su.jpg  used on input line 266.
+Package pdftex.def Info: logo_su.jpg  used on input line 271.
 (pdftex.def)             Requested size: 85.35826pt x 34.4888pt.
  [7]
 <yolo_exemple.png, id=193, 868.24374pt x 681.54625pt>
 File: yolo_exemple.png Graphic file (type png)
 <use yolo_exemple.png>
-Package pdftex.def Info: yolo_exemple.png  used on input line 275.
+Package pdftex.def Info: yolo_exemple.png  used on input line 280.
 (pdftex.def)             Requested size: 204.85846pt x 160.80815pt.
 <depth_ex.png, id=194, 1230.5975pt x 499.8675pt>
 File: depth_ex.png Graphic file (type png)
 <use depth_ex.png>
-Package pdftex.def Info: depth_ex.png  used on input line 282.
+Package pdftex.def Info: depth_ex.png  used on input line 287.
 (pdftex.def)             Requested size: 386.96027pt x 157.17688pt.
 <roi_ex.png, id=195, 541.02126pt x 435.6275pt>
 File: roi_ex.png Graphic file (type png)
 <use roi_ex.png>
-Package pdftex.def Info: roi_ex.png  used on input line 289.
+Package pdftex.def Info: roi_ex.png  used on input line 294.
 (pdftex.def)             Requested size: 204.85846pt x 164.94856pt.
 File: logo_su.jpg Graphic file (type jpg)
 <use logo_su.jpg>
-Package pdftex.def Info: logo_su.jpg  used on input line 294.
+Package pdftex.def Info: logo_su.jpg  used on input line 299.
 (pdftex.def)             Requested size: 85.35826pt x 34.4888pt.
  [8
 pdfTeX warning (ext4): destination with the same identifier (name{figure.0.3}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.294 \FloatBarrier
+l.299 \FloatBarrier
                    
 pdfTeX warning (ext4): destination with the same identifier (name{figure.0.4}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.294 \FloatBarrier
+l.299 \FloatBarrier
                     <./yolo_exemple.png> <./depth_ex.png>]
-Overfull \hbox (6.22488pt too wide) in paragraph at lines 307--308
+Overfull \hbox (6.22488pt too wide) in paragraph at lines 312--313
 []\T1/cmr/bx/n/12 Mode 1 \T1/cmr/m/n/12 : Launch of the emo-tion de-tec-tion mo-dule (\T1/cmtt/m/n/12 emotion_detection2_pneu.py\T1/cmr/m/n/12 ) 
  []
 
 File: logo_su.jpg Graphic file (type jpg)
 <use logo_su.jpg>
-Package pdftex.def Info: logo_su.jpg  used on input line 316.
+Package pdftex.def Info: logo_su.jpg  used on input line 321.
 (pdftex.def)             Requested size: 85.35826pt x 34.4888pt.
 [9
 pdfTeX warning (ext4): destination with the same identifier (name{figure.0.5}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.316 
+l.321 
        <./roi_ex.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 325--326
+Underfull \hbox (badness 10000) in paragraph at lines 330--331
 
  []
 
 <front_glasses.png, id=210, 525.46312pt x 271.0125pt>
 File: front_glasses.png Graphic file (type png)
 <use front_glasses.png>
-Package pdftex.def Info: front_glasses.png  used on input line 331.
+Package pdftex.def Info: front_glasses.png  used on input line 336.
 (pdftex.def)             Requested size: 364.19667pt x 187.84242pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 340--341
+Underfull \hbox (badness 10000) in paragraph at lines 345--346
 
  []
 
 File: logo_su.jpg Graphic file (type jpg)
 <use logo_su.jpg>
-Package pdftex.def Info: logo_su.jpg  used on input line 342.
+Package pdftex.def Info: logo_su.jpg  used on input line 347.
 (pdftex.def)             Requested size: 85.35826pt x 34.4888pt.
 [10
 pdfTeX warning (ext4): destination with the same identifier (name{figure.0.6}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.342 \noindent
+l.347 \noindent
                 Figure~\ref{fig:inside_branch} illustrates the internal stru... <./front_glasses.png>]
 <inside_branch.png, id=220, 421.575pt x 198.7425pt>
 File: inside_branch.png Graphic file (type png)
 <use inside_branch.png>
-Package pdftex.def Info: inside_branch.png  used on input line 346.
+Package pdftex.def Info: inside_branch.png  used on input line 351.
 (pdftex.def)             Requested size: 364.19667pt x 171.69458pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 355--356
+Underfull \hbox (badness 10000) in paragraph at lines 360--361
 
  []
 
 <headstrap.png, id=222, 456.95718pt x 366.61969pt>
 File: headstrap.png Graphic file (type png)
 <use headstrap.png>
-Package pdftex.def Info: headstrap.png  used on input line 361.
+Package pdftex.def Info: headstrap.png  used on input line 366.
 (pdftex.def)             Requested size: 364.19667pt x 292.20528pt.
 File: logo_su.jpg Graphic file (type jpg)
 <use logo_su.jpg>
-Package pdftex.def Info: logo_su.jpg  used on input line 365.
+Package pdftex.def Info: logo_su.jpg  used on input line 370.
 (pdftex.def)             Requested size: 85.35826pt x 34.4888pt.
 [11
 pdfTeX warning (ext4): destination with the same identifier (name{figure.0.7}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.365 
+l.370 
        <./inside_branch.png>]
 File: logo_su.jpg Graphic file (type jpg)
 <use logo_su.jpg>
-Package pdftex.def Info: logo_su.jpg  used on input line 392.
+Package pdftex.def Info: logo_su.jpg  used on input line 397.
 (pdftex.def)             Requested size: 85.35826pt x 34.4888pt.
  [12
 pdfTeX warning (ext4): destination with the same identifier (name{figure.0.8}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.392     \item \textbf
+l.397     \item \textbf
                        {Button 1}: Emotion Detection Mode <./headstrap.png>]
 File: logo_su.jpg Graphic file (type jpg)
 <use logo_su.jpg>
-Package pdftex.def Info: logo_su.jpg  used on input line 433.
+Package pdftex.def Info: logo_su.jpg  used on input line 438.
 (pdftex.def)             Requested size: 85.35826pt x 34.4888pt.
  [13]
 File: logo_su.jpg Graphic file (type jpg)
 <use logo_su.jpg>
-Package pdftex.def Info: logo_su.jpg  used on input line 474.
+Package pdftex.def Info: logo_su.jpg  used on input line 479.
 (pdftex.def)             Requested size: 85.35826pt x 34.4888pt.
  [14]
 File: logo_su.jpg Graphic file (type jpg)
 <use logo_su.jpg>
-Package pdftex.def Info: logo_su.jpg  used on input line 490.
+Package pdftex.def Info: logo_su.jpg  used on input line 500.
 (pdftex.def)             Requested size: 85.35826pt x 34.4888pt.
  [15]
 File: logo_su.jpg Graphic file (type jpg)
 <use logo_su.jpg>
-Package pdftex.def Info: logo_su.jpg  used on input line 496.
+Package pdftex.def Info: logo_su.jpg  used on input line 506.
 (pdftex.def)             Requested size: 85.35826pt x 34.4888pt.
  [16
 
@@ -933,18 +933,18 @@ LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
  ***********
 Package rerunfilecheck Info: File `rapport.out' has not changed.
-(rerunfilecheck)             Checksum: CA26F7B3BCA832C9126BDC184BF0F8B5;4028.
+(rerunfilecheck)             Checksum: 2CC938CC0C6982BC67C72ABFF081AF5B;3967.
  ) 
 Here is how much of TeX's memory you used:
  25270 strings out of 474222
- 492808 string characters out of 5748734
+ 492811 string characters out of 5748733
  1946975 words of memory out of 5000000
  47035 multiletter control sequences out of 15000+600000
  570171 words of font info for 60 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,13n,93p,963b,785s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 84i,13n,93p,964b,785s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1440.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1728.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx2488.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfcc1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm0800.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1728.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt1200.pfb>
-Output written on rapport.pdf (17 pages, 2330659 bytes).
+Output written on rapport.pdf (17 pages, 2332576 bytes).
 PDF statistics:
  324 PDF objects out of 1000 (max. 8388607)
  259 compressed objects within 3 object streams
