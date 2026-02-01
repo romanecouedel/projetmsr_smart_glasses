@@ -199,19 +199,7 @@ While this approach successfully enabled dual-channel operation, it presents inh
 
 
 
-\subsection{Communication Arduino - Computer}
 
-Communication between the Arduino and the computer is carried out via a serial port (USB). The Arduino sends mode commands to the PC using the format \texttt{MODE:X}, where X represents the mode selected by the user through the push buttons.
-
-A launcher program (\texttt{launcher.py}) running on the computer continuously listens to the serial port. Upon receiving a mode command, it manages the start and stop of the corresponding Python processes:
-
-\begin{itemize}
-    \item \textbf{Mode 1}: Launch of the emotion detection module (\texttt{emotion\_detection2\_pneu.py})
-    \item \textbf{Mode 2}: Launch of the obstacle detection module using YOLO (\texttt{objet.py})
-    \item \textbf{Mode 3}: Stop of all active scripts (neutral mode)
-\end{itemize}
-
-This orchestration system ensures that only one AI module runs at a time, optimizing the use of computational resources and simplifying the delivery of haptic feedback to the user. In the event of an interruption (mode change), the launcher cleanly stops the current process before starting a new one.
 
 \subsection{AI Models and Processing}
 The algorithms described below are not executed manually from a terminal, but are launched through the \texttt{launcher.py} script, which manages communication with the Arduino and handles mode switching.  
@@ -306,6 +294,25 @@ The processing pipeline is structured as follows:
 \FloatBarrier
 
 The resulting haptic commands are sent to the Arduino, which controls the pneumatic system to provide feedback to the user. The left and right balloons correspond to obstacles detected on the respective sides of the user.
+
+\subsection{Communication Arduino - Computer}
+
+
+
+Communication between the Arduino and the computer is carried out via a serial port (USB). The Arduino sends mode commands to the PC using the format \texttt{MODE:X}, where X represents the mode selected by the user through the push buttons.
+\subsubsection{Computer}
+A launcher program (\texttt{launcher.py}) running on the computer continuously listens to the serial port. Upon receiving a mode command, it manages the start and stop of the corresponding Python processes:
+
+\begin{itemize}
+    \item \textbf{Mode 1}: Launch of the emotion detection module (\texttt{emotion\_detection2\_pneu.py})
+    \item \textbf{Mode 2}: Launch of the obstacle detection module using YOLO (\texttt{objet.py})
+    \item \textbf{Mode 3}: Stop of all active scripts (neutral mode)
+\end{itemize}
+
+This orchestration system ensures that only one AI module runs at a time, optimizing the use of computational resources and simplifying the delivery of haptic feedback to the user. In the event of an interruption (mode change), the launcher cleanly stops the current process before starting a new one.
+
+\subsubsection{Arduino}
+The Arduino Uno acts as the embedded real-time controller responsible for button handling, serial communication, and pneumatic actuation. During operation, it continuously reads the two push buttons to detect mode transitions and sends the corresponding \texttt{MODE:X} command to the computer via serial. Depending on the active mode, the Arduino routes incoming serial commands to the appropriate control loop: in emotion mode, it executes open-loop inflation and deflation sequences of a fixed duration, while in obstacle detection mode, it runs the closed-loop pressure control algorithm described in Section 3.3 on both left and right channels independently. 
 
 \subsection{User Interface and CAD Design}
 

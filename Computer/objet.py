@@ -135,7 +135,7 @@ encoder = 'vitb'
 
 print(f"🔧 Chargement du modèle Depth Anything V2 ({encoder}) sur {DEVICE}...")
 depth_model = DepthAnythingV2(**model_configs[encoder])
-depth_model.load_state_dict(torch.load(f'checkpoints/depth_anything_v2_{encoder}.pth', map_location='cpu'))
+depth_model.load_state_dict(torch.load(f'depth_anything_v2/checkpoints/depth_anything_v2_{encoder}.pth', map_location='cpu'))
 depth_model = depth_model.to(DEVICE).eval()
 print("✓ Modèle Depth chargé\n")
 
@@ -532,8 +532,7 @@ def main():
         print("✓ Nettoyage terminé")
 
 if __name__ == "__main__":
-    # Décommenter pour activer Arduino
-    # if init_arduino():
-    main()
-    # else:
-    #     print("✗ Impossible de démarrer sans Arduino")
+    if init_arduino():
+    	main()
+    else:
+        print("✗ Impossible de démarrer sans Arduino")
