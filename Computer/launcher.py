@@ -16,7 +16,7 @@ current_mode = None
 def stop_current():
     global current_process
     if current_process is not None:
-        print("⛔ Arrêt du script courant")
+        print("Arrêt du script courant")
         current_process.send_signal(signal.SIGINT)
         current_process.wait()
         current_process = None
@@ -30,20 +30,20 @@ def start_mode(mode):
     stop_current()
 
     if mode == 1:
-        print("🎭 Lancement Emotion Detection")
+        print("Lancement Emotion Detection")
         current_process = subprocess.Popen(EMOTION_CMD)
     elif mode == 2:
-        print("🚧 Lancement Obstacle / YOLO")
+        print("Lancement Obstacle Detection")
         current_process = subprocess.Popen(YOLO_CMD)
     elif mode == 3:
-        print("😐 Mode NEUTRAL (aucun script)")
+        print("Mode NEUTRAL")
 
     current_mode = mode
 
 def main():
     ser = serial.Serial(PORT, BAUDRATE, timeout=1)
     time.sleep(2)
-    print("✓ Mode launcher prêt")
+    print("Mode launcher prêt")
 
     while True:
         line = ser.readline().decode().strip()

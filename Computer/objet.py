@@ -11,16 +11,10 @@ import socket
 import struct
 
 
-
-
-
-
-# ========== Configuration Serial (Arduino) ==========
 ARDUINO_PORT = "/dev/ttyACM1"
 ARDUINO_BAUDRATE = 9600
 arduino = None
 
-# ========== Classes d'objets à détecter ==========
 OBJECT_CLASSES = [0, 13, 28, 56, 59, 26, 57]
 
 # Noms des classes COCO
@@ -29,7 +23,6 @@ COCO_NAMES = {
     56: 'chair', 59: 'bed', 26: 'handbag'
 }
 
-# ========== Système de filtrage temporel ==========
 class ObjectTracker:
     """Suit les objets détectés au fil du temps pour éviter les changements brusques"""
     
@@ -99,29 +92,27 @@ class ObjectTracker:
         self.tracked_objects = {}
         self.last_intensities = {'left': 0, 'right': 0}
 
-# ========== Initialisation Arduino ==========
 def init_arduino():
     global arduino
     try:
         arduino = serial.Serial(ARDUINO_PORT, ARDUINO_BAUDRATE, timeout=1)
         time.sleep(2)
-        print("✓ Connexion Arduino établie")
+        print("Connexion Arduino établie")
         return True
     except Exception as e:
-        print(f"✗ Erreur connexion Arduino: {e}")
-        print("   Vérifiez le port et les droits d'accès")
+        print(f"Erreur connexion Arduino: {e}")
+        print("Vérifiez le port et les droits d'accès")
         return False
 
 def send_command(command):
-    """Envoie une commande à l'Arduino"""
+    """Envoie commande à l'Arduino"""
     if arduino and arduino.is_open:
         try:
             arduino.write(f"{command}\n".encode())
-            print(f"📤 Arduino: {command}")
+            print(f"Arduino: {command}")
         except Exception as e:
-            print(f"✗ Erreur envoi: {e}")
+            print(f"Erreur envoi: {e}")
 
-# ========== Configuration Depth Anything V2 ==========
 DEVICE = 'cuda' if torch.cuda.is_available() else 'mps' if torch.backends.mps.is_available() else 'cpu'
 
 model_configs = {
@@ -133,18 +124,16 @@ model_configs = {
 
 encoder = 'vitb'
 
-print(f"🔧 Chargement du modèle Depth Anything V2 ({encoder}) sur {DEVICE}...")
+print(f"Chargement du modèle Depth Anything V2 ({encoder}) sur {DEVICE}...")
 depth_model = DepthAnythingV2(**model_configs[encoder])
 depth_model.load_state_dict(torch.load(f'depth_anything_v2/checkpoints/depth_anything_v2_{encoder}.pth', map_location='cpu'))
 depth_model = depth_model.to(DEVICE).eval()
-print("✓ Modèle Depth chargé\n")
+print("Modèle Depth chargé\n")
 
-# ========== Chargement YOLO ==========
-print("🔧 Chargement du modèle YOLO...")
+print("Chargement du modèle YOLO...")
 yolo_model = YOLO("yolo11x-seg.pt")
-print("✓ Modèle YOLO chargé\n")
+print("Modèle YOLO chargé\n")
 
-# ========== Fonctions Depth ==========
 def visualize_depth(depth_map):
     """Convertit la carte de profondeur en image colorée"""
     depth_normalized = (depth_map - depth_map.min()) / (depth_map.max() - depth_map.min())
@@ -199,7 +188,6 @@ def depth_to_intensity(normalized_depth, closest_depth):
     
     return max(10, min(100, intensity))  # Limiter entre 10 et 100
 
-# ========== Fonctions ROI ==========
 def is_in_roi(box_center_x, box_center_y, frame_width, frame_height):
     """Vérifie si le centre de la bounding box est dans la zone d'intérêt"""
     roi_top = 0
@@ -274,7 +262,7 @@ def process_detection_with_depth(objects_data, frame_width, frame_height, tracke
         # Envoyer STOP seulement si les deux intensités sont à 0
         if tracker.last_intensities['left'] == 0 and tracker.last_intensities['right'] == 0:
             send_command("STOP")
-            print("\n✓ Aucun obstacle dans la ROI")
+            print("\nAucun obstacle dans la ROI")
         return
     
     # Trouver l'objet le plus proche globalement (profondeur MAXIMALE car proche = valeur élevée)
@@ -286,7 +274,7 @@ def process_detection_with_depth(objects_data, frame_width, frame_height, tracke
         obj['intensity'] = depth_to_intensity(obj['depth'], closest_depth)
     
     print("\n" + "="*60)
-    print("🎯 OBJETS DÉTECTÉS DANS LA ROI:")
+    print("OBJETS DÉTECTÉS DANS LA ROI:")
     print("="*60)
     
     # CONTRAINTE: Garder UN SEUL objet par côté (le plus proche = depth max)
@@ -307,12 +295,12 @@ def process_detection_with_depth(objects_data, frame_width, frame_height, tracke
             side = "GAUCHE"
             class_name = COCO_NAMES.get(selected_left['class'], f"class_{selected_left['class']}")
             depth_percent = selected_left['depth'] * 100
-            status = "✓ STABLE" if smoothed_intensity == selected_left['intensity'] else "⏳ LISSAGE"
+            status = "STABLE" if smoothed_intensity == selected_left['intensity'] else "LISSAGE"
             print(f"  [{side:6}] {class_name:10} | D:{depth_percent:5.1f}% | I:{smoothed_intensity:3}% | {status}")
         else:
             # Objet pas encore stable
             class_name = COCO_NAMES.get(selected_left['class'], f"class_{selected_left['class']}")
-            print(f"  [GAUCHE] {class_name:10} | ⏱️  EN ATTENTE (stabilisation...)")
+            print(f"  [GAUCHE] {class_name:10} |  EN ATTENTE (stabilisation...)")
     else:
         tracker.clear_side('left', current_time)
     
@@ -328,12 +316,12 @@ def process_detection_with_depth(objects_data, frame_width, frame_height, tracke
             side = "DROITE"
             class_name = COCO_NAMES.get(selected_right['class'], f"class_{selected_right['class']}")
             depth_percent = selected_right['depth'] * 100
-            status = "✓ STABLE" if smoothed_intensity == selected_right['intensity'] else "⏳ LISSAGE"
+            status = "STABLE" if smoothed_intensity == selected_right['intensity'] else "LISSAGE"
             print(f"  [{side:6}] {class_name:10} | D:{depth_percent:5.1f}% | I:{smoothed_intensity:3}% | {status}")
         else:
             # Objet pas encore stable
             class_name = COCO_NAMES.get(selected_right['class'], f"class_{selected_right['class']}")
-            print(f"  [DROITE] {class_name:10} | ⏱️  EN ATTENTE (stabilisation...)")
+            print(f"  [DROITE] {class_name:10} |  EN ATTENTE (stabilisation...)")
     else:
         tracker.clear_side('right', current_time)
     
@@ -343,7 +331,7 @@ def process_detection_with_depth(objects_data, frame_width, frame_height, tracke
         time.sleep(0.3)
         send_command(f"GD,{final_right_intensity}")
         time.sleep(0.3)
-        print(f"\n⚠️  ALERTE: Obstacles des DEUX côtés")
+        print(f"\nALERTE: Obstacles des DEUX côtés")
         
     elif final_left_intensity is not None:
         send_command(f"GG,{final_left_intensity}")
@@ -355,7 +343,7 @@ def process_detection_with_depth(objects_data, frame_width, frame_height, tracke
                 send_command(f"GD,{new_right}")
                 time.sleep(0.3)
                 tracker.last_intensities['right'] = new_right
-        print(f"\n⚠️  ALERTE: Obstacle à GAUCHE")
+        print(f"\nALERTE: Obstacle à GAUCHE")
         
     elif final_right_intensity is not None:
         send_command(f"GD,{final_right_intensity}")
@@ -368,16 +356,14 @@ def process_detection_with_depth(objects_data, frame_width, frame_height, tracke
                 send_command(f"GG,{new_left}")
                 time.sleep(0.3)
                 tracker.last_intensities['left'] = new_left
-        print(f"\n⚠️  ALERTE: Obstacle à DROITE")
+        print(f"\nALERTE: Obstacle à DROITE")
     
     print("="*60)
 
-# ========== Boucle Principale ==========
 def main():
-    # Ouvrir la caméra
     cap = cv2.VideoCapture(0)
     if not cap.isOpened():
-        print("✗ Erreur: Caméra non trouvée")
+        print("Erreur: Caméra non trouvée")
         return
     
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
@@ -386,8 +372,8 @@ def main():
     frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
     
-    print(f"✓ Caméra activée ({frame_width}x{frame_height}px)")
-    print("📹 Appuyez sur 'q' pour quitter\n")
+    print(f"Caméra activée ({frame_width}x{frame_height}px)")
+    print("Appuyez sur 'q' pour quitter\n")
 
     tracker = ObjectTracker(stability_duration=1.0, intensity_step=15)
     
@@ -407,14 +393,12 @@ def main():
 
             packet, addr= sock.recvfrom(65536)
             #print("Reçu de :", addr)
-
             
             size = struct.unpack("H", packet[:2])[0]
             data = packet[2:2+size]
 
             # Décodage JPEG
             frame = cv2.imdecode(np.frombuffer(data, dtype=np.uint8), cv2.IMREAD_COLOR)
-           
            
             current_time = time.time() 
 
@@ -423,11 +407,11 @@ def main():
             # if not ret:
             #     break
             
-            # ===== FENÊTRE 1 : Caméra RGB Brute =====
+            # FENÊTRE 1 : Caméra RGB Brute
             frame_rgb = frame.copy()
             cv2.imshow("1. Camera RGB", frame_rgb)
             
-            # ===== FENÊTRE 2 : Depth Estimation =====
+            # FENÊTRE 2 : Depth Estimation
             with torch.no_grad():
                 depth = depth_model.infer_image(frame)
             depth_colored = visualize_depth(depth)
@@ -435,7 +419,7 @@ def main():
                 depth_colored = cv2.resize(depth_colored, (frame.shape[1], frame.shape[0]))
             cv2.imshow("2. Depth Estimation", depth_colored)
             
-            # ===== FENÊTRE 3 : Object Detection avec Masques =====
+            # FENÊTRE 3 : Object Detection avec Masques
             results = yolo_model(frame, conf=0.5, iou=0.45, verbose=False,classes=OBJECT_CLASSES)
             
             # Collecter les données des objets
@@ -491,7 +475,7 @@ def main():
             
             cv2.imshow("3. Object Detection", annotated_frame)
             
-            # ===== FENÊTRE 4 : Info Objets + Profondeur =====
+            # FENÊTRE 4 : Info Objets + Profondeur
             info_frame = frame.copy()
             
             for obj in objects_data:
@@ -521,7 +505,7 @@ def main():
                 break
     
     except KeyboardInterrupt:
-        print("\n⛔ Arrêt du programme...")
+        print("\nArrêt du programme...")
     
     finally:
         send_command("STOP")
@@ -533,6 +517,6 @@ def main():
 
 if __name__ == "__main__":
     if init_arduino():
-    	main()
+        main()
     else:
-        print("✗ Impossible de démarrer sans Arduino")
+        print("Impossible de démarrer sans Arduino")

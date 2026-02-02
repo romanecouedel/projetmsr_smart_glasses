@@ -8,7 +8,6 @@ import struct
 
 import numpy as np
 
-# ================= EMOTION REDUCTION =================
 EMOTION_MAP = {
     "happy": "happy",
     "surprise": "happy",
@@ -36,7 +35,6 @@ def reduce_to_three(emotions: dict) -> tuple[str, float]:
         return "neutral", score
     return top, score
 
-# ================= ARDUINO / PNEUMATIQUE =================
 ARDUINO_PORT = "/dev/ttyACM1"
 ARDUINO_BAUDRATE = 9600
 arduino = None
@@ -56,16 +54,11 @@ def init_arduino():
 #     if arduino and arduino.is_open:
 #         arduino.write(f"{command}\n".encode())
 #         print(f"{command}")
+
 def send_command(command):
     if arduino and arduino.is_open:
         arduino.write(f"{command}\n".encode())
 
-# Reduced emotion → pneumatic behavior (LEFT side only)
-# PNEUMATIC_MAP = {
-#     "happy": ("aspirer", "gonfler", 100),
-#     "sad": ("gonfler", "aspirer", 100),
-#     "neutral": ("arreter", "arreter", 0),
-# }
 PNEUMATIC_MAP = {
     "happy": {
         "left": ("arreter", 0),
@@ -82,24 +75,7 @@ PNEUMATIC_MAP = {
 }
 
 def process_emotion_pneumatic(emotion, confidence):
-    # if emotion not in PNEUMATIC_MAP:
-    #     send_command("STOP")
-    #     return
-
-    # action_gauche, _, intensity = PNEUMATIC_MAP[emotion]
-
-    # print(f"\n🎭 Emotion: {emotion} ({confidence:.2f})")
-
-    # if action_gauche == "gonfler":
-    #     send_command(f"GG,{intensity}")
-    # elif action_gauche == "aspirer":
-    #     send_command(f"AG,{intensity}")
-    # else:
-    #     send_command("STOP")
-    # send_command("DONE")
-    # raise SystemExit
-    # time.sleep(0.2)
-    print(f"\n🎭 Emotion: {emotion} ({confidence:.2f})")
+    print(f"\nEmotion: {emotion} ({confidence:.2f})")
 
     config = PNEUMATIC_MAP[emotion]
 
@@ -124,7 +100,6 @@ def process_emotion_pneumatic(emotion, confidence):
     send_command("DONE")
     raise SystemExit
 
-# ================= MAIN =================
 def main():
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -139,13 +114,8 @@ def main():
     last_boxes_and_labels = []
 
     while True:
-
-        
-
         packet, addr= sock.recvfrom(65536)
-        #print("Reçu de :", addr)
-
-        
+        #print("Reçu de :", addr)        
         size = struct.unpack("H", packet[:2])[0]
         data = packet[2:2+size]
 
@@ -201,15 +171,13 @@ def main():
         if cv2.waitKey(1) & 0xFF == ord("q"):
             break
 
-    # send_command("STOP")
     cap.release()
     cv2.destroyAllWindows()
     if arduino and arduino.is_open:
         arduino.close()
 
-# ================= RUN =================
 if __name__ == "__main__":
     if init_arduino():
         main()
     else:
-        print("Program stopped (Arduino not available)")
+        print("Arduino not available")
